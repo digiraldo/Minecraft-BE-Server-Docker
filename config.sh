@@ -131,9 +131,9 @@ Print_Style "Valores permitidos: cualquier cadena: " "$CYAN"
     read answer < /dev/tty
     if [ "$answer" != "${answer#[Yy]}" ]; then
       # Crear copia de seguridad
-      #  if [ -d "worlds" ]; then
-     #   echo "Copia de seguridad del servidor (en la carpeta minecraftbe/servername/backups)"
-     #   sudo tar -pzvcf backups/$(date +%d.%m.%Y_%H.%M.%S_servername).tar.gz worlds
+        if [ -d "worlds" ]; then
+        echo "Copia de seguridad del servidor (en la carpeta minecraftbe/servername/backups)"
+        sudo tar -pzvcf backups/$(date +%d.%m.%Y_%H.%M.%S_servername).tar.gz worlds
         fi
         #sudo rm -rf worlds
         #sudo mkdir worlds
