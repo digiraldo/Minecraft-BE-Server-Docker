@@ -81,7 +81,7 @@ sudo apt-get install software-properties-common
 Print_Style "Agregando la clave GPG oficial de Docker..." "$BLUE"
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-Print_Style "Verificando la clave 0EBFCD88 GPG oficial de Docker..." "$MAGENTA"
+Print_Style "Verificando la clave 0EBF CD88 GPG oficial de Docker..." "$MAGENTA"
 sleep 3s
 sudo apt-key fingerprint 0EBFCD88
 
@@ -133,8 +133,8 @@ echo "========================================================================="
 #####if [ ! -d "$ServerName" ]; then
 if [ -d "$ServerName" ];
 then
-echo "¡El directorio minecraftbe/$ServerName ya existe!  Actualizando scripts y configurando el servicio..."
-Print_Style "Iniciando Instalacion del Servidor Minecraft Bedrock Edition en Docker" "$MAGENTA"
+Print_Style "¡El directorio minecraftbe/$ServerName ya existe!  Actualizando scripts y configurando el servicio..." "$MAGENTA"
+Print_Style "Iniciando Actualización del Servidor Minecraft Bedrock Edition en Docker" "$MAGENTA"
 sleep 4s
 #-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-Si-
 
@@ -212,6 +212,14 @@ sleep 2s
   sudo sed -i "s:dirname:$DirName:g" config.sh
   sudo sed -i "s:servername:$ServerName:g" config.sh
 
+# Implementar el servidor
+cd ~
+Print_Style "Iplementando el Servidor..." "$GREEN"
+sleep 2s
+sudo docker run -itd --restart=always --name=$ServerName --net=host \
+  -v $DirName/minecraftbe/$ServerName:/$ServerName \
+  lomot/minecraft-bedrock:1.16.100.04
+
 # Haga una copia de seguridad de sus datos
 Print_Style "Realizando copia de seguridad de datos $DirName/minecraftbe/$ServerName..." "$GREEN"
 sleep 2s
@@ -229,11 +237,9 @@ sudo docker container rm $ServerName
 Print_Style "Iniciando nuevo contenedor..." "$BLUE"
 sleep 2s
 sudo docker run -itd --restart=always --name=$ServerName --net=host \
-  -v $DirName/minecraftbe/$ServerName:/data \
+  -v $DirName/minecraftbe/$ServerName:/$ServerName \
   lomot/minecraft-bedrock:1.16.100.04
 
-
-cd ~
 echo -n "¿Iniciar el servidor de Minecraft automáticamente? (y/n)?"
   read answer < /dev/tty
   if [ "$answer" != "${answer#[Yy]}" ]; then
@@ -355,10 +361,10 @@ sudo mkdir backups
 
 # Implementar el servidor
 cd ~
-Print_Style "Implementando el Servidor..." "$GREEN"
+Print_Style "Iplementando el Servidor..." "$GREEN"
 sleep 2s
 sudo docker run -itd --restart=always --name=$ServerName --net=host \
-  -v $DirName/minecraftbe/$ServerName:/data \
+  -v $DirName/minecraftbe/$ServerName:/$ServerName \
   lomot/minecraft-bedrock:1.16.100.04
 
 # Haga una copia de seguridad de sus datos
@@ -378,7 +384,7 @@ sudo docker container rm $ServerName
 Print_Style "Iniciando nuevo contenedor..." "$BLUE"
 sleep 2s
 sudo docker run -itd --restart=always --name=$ServerName --net=host \
-  -v $DirName/minecraftbe/$ServerName:/data \
+  -v $DirName/minecraftbe/$ServerName:/$ServerName \
   lomot/minecraft-bedrock:1.16.100.04
 
 # Gestionar el servidor
