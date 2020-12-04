@@ -129,6 +129,7 @@ read_with_prompt ServerName "Nombre de Servidor"
 
 echo "========================================================================="
 cd ~
+cd minecraftbe
 if [ ! -d "$ServerName" ]; then
 echo "¡El directorio minecraftbe/$ServerName ya existe!  Actualizando scripts y configurando el servicio..."
 Print_Style "Iniciando Instalacion del Servidor Minecraft Bedrock Edition en Docker" "$MAGENTA"
