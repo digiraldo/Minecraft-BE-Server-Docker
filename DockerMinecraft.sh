@@ -78,7 +78,7 @@ sudo apt-get install gnupg-agent
 sudo apt-get install software-properties-common
 
 # Agregue la clave GPG oficial de Docker:
-Print_Style "Agregando la clave GPG oficial de Docker..." "$CYAN"
+Print_Style "Agregando la clave GPG oficial de Docker..." "$BLUE"
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
 Print_Style "Verificando la clave 0EBFCD88 GPG oficial de Docker..." "$MAGENTA"
@@ -98,7 +98,7 @@ Print_Style "Actualisando el apt índice del paquete..." "$CYAN"
 sleep 2s
 sudo apt-get update
 
-Print_Style "Instalando la última versión de Docker Engine y containerd..." "$CYAN"
+Print_Style "Instalando la última versión de Docker Engine y containerd..." "$GREEN"
 sleep 2s
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 
