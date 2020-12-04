@@ -217,7 +217,7 @@ cd ~
 Print_Style "Iplementando el Servidor..." "$GREEN"
 sleep 2s
 sudo docker run -itd --restart=always --name=$ServerName --net=host \
-  -v $DirName/minecraftbe/$ServerName:/$ServerName \
+  -v $DirName/minecraftbe/$ServerName:/data \
   lomot/minecraft-bedrock:1.16.100.04
 
 # Haga una copia de seguridad de sus datos
@@ -237,7 +237,7 @@ sudo docker container rm $ServerName
 Print_Style "Iniciando nuevo contenedor..." "$BLUE"
 sleep 2s
 sudo docker run -itd --restart=always --name=$ServerName --net=host \
-  -v $DirName/minecraftbe/$ServerName:/$ServerName \
+  -v $DirName/minecraftbe/$ServerName:/data \
   lomot/minecraft-bedrock:1.16.100.04
 
 echo -n "¿Iniciar el servidor de Minecraft automáticamente? (y/n)?"
@@ -364,7 +364,7 @@ cd ~
 Print_Style "Iplementando el Servidor..." "$GREEN"
 sleep 2s
 sudo docker run -itd --restart=always --name=$ServerName --net=host \
-  -v $DirName/minecraftbe/$ServerName:/$ServerName \
+  -v $DirName/minecraftbe/$ServerName:/data \
   lomot/minecraft-bedrock:1.16.100.04
 
 # Haga una copia de seguridad de sus datos
@@ -384,7 +384,7 @@ sudo docker container rm $ServerName
 Print_Style "Iniciando nuevo contenedor..." "$BLUE"
 sleep 2s
 sudo docker run -itd --restart=always --name=$ServerName --net=host \
-  -v $DirName/minecraftbe/$ServerName:/$ServerName \
+  -v $DirName/minecraftbe/$ServerName:/data \
   lomot/minecraft-bedrock:1.16.100.04
 
 # Gestionar el servidor
