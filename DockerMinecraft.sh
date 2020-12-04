@@ -122,6 +122,8 @@ echo "Para eliminar algún container exixtente seleccione Si (y)"
         Print_Style "Debes escribir o copiar el Nombre del Container (NAMES) " "$CYAN"
         read_with_prompt NameC "Nombre del container"
         echo "========================================================================="
+        sudo docker container stop $NameC
+        sleep 2s
         sudo docker container rm $NameC
         Print_Style "Eliminando container $NameC" "$MAGENTA"
         sleep 2s
