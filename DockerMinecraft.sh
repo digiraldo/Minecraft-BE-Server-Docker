@@ -193,6 +193,14 @@ echo "========================================================================="
 echo "========================================================================="
 sleep 2s
 
+# Descargar start.sh desde el repositorio
+ echo "========================================================================="
+  echo "Tomando start.sh del repositorio..."
+  wget -O start.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/master/start.sh
+  chmod +x start.sh
+  sudo sed -i "s:dirname:$DirName:g" start.sh
+  sudo sed -i "s:servername:$ServerName:g" start.sh
+
 # Descargar config.sh desde el repositorio
  echo "========================================================================="
   echo "Tomando config.sh del repositorio..."
@@ -377,6 +385,14 @@ cd minecraftbe
 cd $ServerName
 
 sleep 2s
+
+# Descargar start.sh desde el repositorio
+ echo "========================================================================="
+  echo "Tomando start.sh del repositorio..."
+  wget -O start.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/master/start.sh
+  chmod +x start.sh
+  sudo sed -i "s:dirname:$DirName:g" start.sh
+  sudo sed -i "s:servername:$ServerName:g" start.sh
 
 # Descargar config.sh desde el repositorio
  echo "========================================================================="
