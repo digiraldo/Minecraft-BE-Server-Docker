@@ -128,7 +128,7 @@ echo "Para eliminar algún container exixtente seleccione Si (y)"
         Print_Style "Eliminando container $NameC" "$MAGENTA"
         sleep 2s
         echo "========================================================================="
-        cd~
+        cd ~
         cd minecraftbe
             if [ ! -d "$NameC" ]; then
             Print_Style "No existe directorio para eliminar $NameC" "$MAGENTA"
