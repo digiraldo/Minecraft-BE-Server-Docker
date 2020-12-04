@@ -195,7 +195,7 @@ sudo docker run -itd --restart=always --name=$ServerName --net=host \
   echo "Tomando config.sh del repositorio..."
   wget -O config.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/main/config.sh
   chmod +x config.sh
-#  sudo sed -i "s:dirname:$DirName:g" config.sh
+  sudo sed -i "s:dirname:$DirName:g" config.sh
   sudo sed -i "s:servername:$ServerName:g" config.sh
 
 # Gestionar el servidor
