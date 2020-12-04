@@ -131,7 +131,7 @@ echo "========================================================================="
 
 
 #####if [ ! -d "$ServerName" ]; then
-if [ -d /$ServerName/ ];
+if [ -d "$ServerName" ];
 then
 echo "¡El directorio minecraftbe/$ServerName ya existe!  Actualizando scripts y configurando el servicio..."
 Print_Style "Iniciando Instalacion del Servidor Minecraft Bedrock Edition en Docker" "$MAGENTA"
