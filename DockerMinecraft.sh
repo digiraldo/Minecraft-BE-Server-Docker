@@ -4,8 +4,7 @@
 # Instrucciones: https://github.com/LomotHo/minecraft-bedrock
 # Instrucciones en Español: https://gorobeta.blogspot.com
 # Para ejecutar el script de configuración, use:
-#
-# wget https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/main/DockerMinecraft.sh
+# wget https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/master/DockerMinecraft.sh
 # chmod +x DockerMinecraft.sh
 # ./DockerMinecraft.sh
 #
@@ -177,7 +176,7 @@ sudo docker run -itd --restart=always --name=$ServerName --net=host \
 # Descargar cloud.sh desde el repositorio
 #echo "========================================================================="
 #echo "Tomando restart.sh del repositorio..."
-#wget -O cloud.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/main/cloud.sh
+#wget -O cloud.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/master/cloud.sh
 #chmod +x cloud.sh
 #sudo sed -i "s:dirname:$DirName:g" cloud.sh
 #sudo sed -i "s/servername/$ServerName/g" cloud.sh
@@ -185,7 +184,7 @@ sudo docker run -itd --restart=always --name=$ServerName --net=host \
 # Descargar back.sh desde el repositorio
 #echo "========================================================================="
 #  echo "Tomando back.sh del repositorio..."
-#  wget -O back.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/main/back.sh
+#  wget -O back.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/master/back.sh
 #  chmod +x back.sh
 #  sudo sed -i "s:dirname:$DirName:g" back.sh
 #  sudo sed -i "s:servername:$ServerName:g" back.sh
@@ -193,7 +192,7 @@ sudo docker run -itd --restart=always --name=$ServerName --net=host \
 # Descargar config.sh desde el repositorio
  echo "========================================================================="
   echo "Tomando config.sh del repositorio..."
-  wget -O config.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/main/config.sh
+  wget -O config.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/master/config.sh
   chmod +x config.sh
   sudo sed -i "s:dirname:$DirName:g" config.sh
   sudo sed -i "s:servername:$ServerName:g" config.sh
