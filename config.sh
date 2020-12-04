@@ -161,7 +161,7 @@ sleep 1s
 sudo sed -n "/server-name=/p" server.properties | sed 's/server-name=/Para realizar los cambios se reiniciará el Servidor: .... /'
 sleep 2s
 
-docker container restart mcpe
+sudo docker container restart servername
 sleep 2s
 
 Print_Style "Servidor: servername Configurado..." "$GREEN"

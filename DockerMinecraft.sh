@@ -102,6 +102,42 @@ Print_Style "Instalando la última versión de Docker Engine y containerd..." "$
 sleep 2s
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 
+#Verificar si existen containers de servidores Minecraft
+echo "========================================================================="
+Print_Style "ADVERTECIA: Obteniendo datos de los contenedores, si observa que existen contenedores," "$RED"
+Print_Style "deben ser eliminados con el comando: sudo docker container rm nombredelservidor" "$RED"
+echo "========================================================================="
+read -n1 -r -p "Presione cualquier tecla para continuar"
+Print_Style "=========================================================================" "$BLUE"
+sudo docker container ps -a
+echo "========================================================================="
+
+echo "Para continuar con la instalacion del servidor seleccione No (n)"
+echo "Para eliminar algún container exixtente seleccione Si (y)"
+    echo -n "¿Eliminar container existente? (y/n)"
+    read answer < /dev/tty
+    if [ "$answer" != "${answer#[Yy]}" ]; then
+      # Crear copia de seguridad en la nube cloudname
+        echo "========================================================================="
+        Print_Style "Debes escribir o copiar el Nombre del Container (NAMES) " "$CYAN"
+        read_with_prompt NameC "Nombre del container"
+        echo "========================================================================="
+        sudo docker container rm $NameC
+        Print_Style "Eliminando container $NameC" "$MAGENTA"
+        sleep 2s
+        echo "========================================================================="
+        cd~
+        cd minecraftbe
+            if [ ! -d "$NameC" ]; then
+            Print_Style "No existe directorio para eliminar $NameC" "$MAGENTA"
+            else
+            sudo rm -rf $NameC
+            Print_Style "Eliminando directorio $NameC" "$MAGENTA"
+            fi
+        echo "========================================================================="
+        sleep 3s
+    fi
+
 # Verifique si el directorio principal del servidor de Minecraft ya existe
 cd ~
 if [ ! -d "minecraftbe" ]; then
@@ -157,6 +193,15 @@ sleep 2s
   chmod +x config.sh
   sudo sed -i "s:dirname:$DirName:g" config.sh
   sudo sed -i "s:servername:$ServerName:g" config.sh
+
+# Crear directorio de servidor
+echo "Creando directorio del servidor de Minecraft (~/minecraftbe/$ServerName)..."
+cd ~
+cd minecraftbe
+cd $ServerName
+#sudo mkdir downloads
+sudo mkdir backups
+#sudo mkdir logs
 
 #echo "========================================================================="
 #if [ -d "$ServerName" ]; then
