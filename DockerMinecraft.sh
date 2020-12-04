@@ -254,10 +254,11 @@ echo -n "¿Iniciar el servidor de Minecraft automáticamente? (y/n)?"
 
 # Gestionar el servidor
 Print_Style "Entrar o salir de la consola de juegos..." "$BLUE"
-sudo docker attach $ServerName
 Print_Style "Para salir, presione ctrl+p+q" "$BLUE"
 Print_Style "Para matar el proceso, presione ctrl+c o ctrl+d" "$BLUE"
 sleep 3s
+sudo docker attach $ServerName
+
 
 # Gestionar el servidor minecraft (detener / iniciar / reiniciar / eliminar)
 echo "================================================================="
@@ -379,10 +380,10 @@ sudo docker run -itd --restart=always --name=$ServerName --net=host \
 
 # Gestionar el servidor
 Print_Style "Entrar o salir de la consola de juegos..." "$BLUE"
-sudo docker attach $ServerName
 Print_Style "Para salir, presione ctrl+p+q" "$BLUE"
 Print_Style "Para matar el proceso, presione ctrl+c o ctrl+d" "$BLUE"
 sleep 3s
+sudo docker attach $ServerName
 
 cd ~
 cd minecraftbe
