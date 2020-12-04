@@ -62,7 +62,7 @@ function read_with_prompt {
 }
 
 # Instale las dependencias necesarias para ejecutar el servidor de Minecraft en segundo plano
-Print_Style "Instalando screen, unzip, sudo, net-tools, wget..." "$CYAN"
+Print_Style "Instalando screen, unzip, sudo, net-tools, wget y otras dependencias..." "$CYAN"
 if [ ! -n "`which sudo`" ]; then
   apt-get update && apt-get install sudo -y
 fi
@@ -127,19 +127,48 @@ echo "Se utilizará como nombre de la carpeta y el nombre del servicio..."
 echo "========================================================================="
 read_with_prompt ServerName "Nombre de Servidor"
 
-echo "========================================================================="
-if [ -d "$ServerName" ]; then
-  echo "¡El directorio minecraftbe/$ServerName ya existe!  Actualizando scripts y configurando el servicio..."
-echo "========================================================================="
-speed 4s
-  # Obtener la ruta del directorio de inicio y el nombre de usuario
-  DirName=$(readlink -e ~)
-  UserName=$(whoami)
-  cd ~
-  cd minecraftbe
+# Obtener la ruta del directorio de inicio y el nombre de usuario
+DirName=$(readlink -e ~)
+UserName=$(whoami)
+
+# Verifique si el directorio de la unidad en la nube ya existe
+cd ~
+cd minecraftbe
+if [ ! -d "$ServerName" ]; then
+  mkdir $ServerName
   cd $ServerName
-  echo "El directorio del servidor es: $DirName/minecraftbe/$ServerName"
+else
+  cd $ServerName
+fi
+Print_Style "El directorio $DirName/minecraftbe/$ServerName es la unidad en la Nube" "$GREEN"
+
 echo "========================================================================="
+
+cd ~
+cd minecraftbe
+cd $ServerName
+
+# Descargar config.sh desde el repositorio
+ echo "========================================================================="
+  echo "Tomando config.sh del repositorio..."
+  wget -O config.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/master/config.sh
+  chmod +x config.sh
+  sudo sed -i "s:dirname:$DirName:g" config.sh
+  sudo sed -i "s:servername:$ServerName:g" config.sh
+
+#echo "========================================================================="
+#if [ -d "$ServerName" ]; then
+#  echo "¡El directorio minecraftbe/$ServerName ya existe!  Actualizando scripts y configurando el servicio..."
+#echo "========================================================================="
+#speed 4s
+  # Obtener la ruta del directorio de inicio y el nombre de usuario
+#  DirName=$(readlink -e ~)
+#  UserName=$(whoami)
+#  cd ~
+#  cd minecraftbe
+#  cd $ServerName
+#  echo "El directorio del servidor es: $DirName/minecraftbe/$ServerName"
+#echo "========================================================================="
 
 # Crear una carpeta para los datos del servidor
 #Print_Style "Creando Carpeta para los datos del Mundo..." "$GREEN"
@@ -147,6 +176,7 @@ echo "========================================================================="
 #sudo mkdir -p /opt/mcpe-data
 
 # Implementar el servidor
+cd ~
 Print_Style "Iplementando el Servidor..." "$GREEN"
 sleep 2s
 sudo docker run -itd --restart=always --name=$ServerName --net=host \
@@ -188,14 +218,6 @@ sudo docker run -itd --restart=always --name=$ServerName --net=host \
 #  chmod +x back.sh
 #  sudo sed -i "s:dirname:$DirName:g" back.sh
 #  sudo sed -i "s:servername:$ServerName:g" back.sh
-
-# Descargar config.sh desde el repositorio
- echo "========================================================================="
-  echo "Tomando config.sh del repositorio..."
-  wget -O config.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/master/config.sh
-  chmod +x config.sh
-  sudo sed -i "s:dirname:$DirName:g" config.sh
-  sudo sed -i "s:servername:$ServerName:g" config.sh
 
 # Gestionar el servidor
 Print_Style "Entrar o salir de la consola de juegos..." "$CYAN"
