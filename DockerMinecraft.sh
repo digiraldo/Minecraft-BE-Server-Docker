@@ -147,7 +147,7 @@ Print_Style "===================================================================
 echo "========================================================================="
 
 echo "Para continuar con la instalacion del servidor seleccione No (n)"
-echo "Para eliminar algún container exixtente seleccione Si (y)"
+echo "Para eliminar algún container existente seleccione Si (y)"
     echo -n "¿Eliminar container existente? (y/n)"
     read answer < /dev/tty
     if [ "$answer" != "${answer#[Yy]}" ]; then
@@ -306,7 +306,7 @@ Print_Style "===================================================================
 echo "========================================================================="
 
 echo "Para continuar con la instalacion del servidor seleccione No (n)"
-echo "Para eliminar algún container exixtente seleccione Si (y)"
+echo "Para eliminar algún container existente seleccione Si (y)"
     echo -n "¿Eliminar container existente? (y/n)"
     read answer < /dev/tty
     if [ "$answer" != "${answer#[Yy]}" ]; then
