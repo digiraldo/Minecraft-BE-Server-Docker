@@ -273,7 +273,7 @@ Print_Style "Entrar o salir de la consola de juegos..." "$CYAN"
 docker attach $ServerName
 Print_Style "Para salir, presione ctrl+p+q" "$YELLOW"
 Print_Style "Para matar el proceso, presione ctrl+c o ctrl+d" "$MAGENTA"
-sleep s
+sleep 3s
 
 # Gestionar el servidor minecraft (detener / iniciar / reiniciar / eliminar)
 echo "================================================================="
