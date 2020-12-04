@@ -277,6 +277,8 @@ sleep 3s
 
 # Gestionar el servidor minecraft (detener / iniciar / reiniciar / eliminar)
 echo "================================================================="
+echo "================================================================="
+echo "================================================================="
 Print_Style "Para detener el Servidor: docker container stop $ServerName" "$CYAN"
 echo "================================================================="
 sleep 2s
@@ -285,8 +287,13 @@ echo "================================================================="
 sleep 2s
 Print_Style "Para reiniciar el Servidor: docker container restart $ServerName" "$YELLOW"
 echo "================================================================="
-sudo docker container restart $ServerName
+echo "================================================================="
+echo "================================================================="
 sleep 4s
+Print_Style "Reiniciando el Servidor:" "$YELLOW"
+sudo docker container restart $ServerName
+echo "================================================================="
+sleep 2s
 
 cd ~
 cd minecraftbe
