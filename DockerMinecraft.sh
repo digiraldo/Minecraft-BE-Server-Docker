@@ -253,24 +253,27 @@ echo -n "¿Iniciar el servidor de Minecraft automáticamente? (y/n)?"
   fi
 
 # Gestionar el servidor
+echo "========================================================================="
 Print_Style "Entrar o salir de la consola de juegos..." "$BLUE"
-Print_Style "Para salir, presione ctrl+p+q" "$BLUE"
+echo "========================================================================="
+Print_Style "Para salir, presione ctrl+p+q" "$CYAN"
+echo "========================================================================="
 Print_Style "Para matar el proceso, presione ctrl+c o ctrl+d" "$BLUE"
+echo "========================================================================="
 sleep 3s
 sudo docker attach $ServerName
-
 
 # Gestionar el servidor minecraft (detener / iniciar / reiniciar / eliminar)
 echo "================================================================="
 echo "================================================================="
 echo "================================================================="
-Print_Style "Para detener el Servidor: docker container stop $ServerName" "$CYAN"
+Print_Style "Para detener el Servidor: sudo docker container stop $ServerName" "$CYAN"
 echo "================================================================="
 sleep 2s
-Print_Style "Para iniciar el Servidor: docker container start $ServerName" "$MAGENTA"
+Print_Style "Para iniciar el Servidor: sudo docker container start $ServerName" "$MAGENTA"
 echo "================================================================="
 sleep 2s
-Print_Style "Para reiniciar el Servidor: docker container restart $ServerName" "$YELLOW"
+Print_Style "Para reiniciar el Servidor: sudo docker container restart $ServerName" "$YELLOW"
 echo "================================================================="
 echo "================================================================="
 echo "================================================================="
@@ -379,9 +382,13 @@ sudo docker run -itd --restart=always --name=$ServerName --net=host \
   lomot/minecraft-bedrock:1.16.100.04
 
 # Gestionar el servidor
+echo "========================================================================="
 Print_Style "Entrar o salir de la consola de juegos..." "$BLUE"
-Print_Style "Para salir, presione ctrl+p+q" "$BLUE"
+echo "========================================================================="
+Print_Style "Para salir, presione ctrl+p+q" "$CYAN"
+echo "========================================================================="
 Print_Style "Para matar el proceso, presione ctrl+c o ctrl+d" "$BLUE"
+echo "========================================================================="
 sleep 3s
 sudo docker attach $ServerName
 
@@ -455,13 +462,13 @@ fi
 echo "================================================================="
 echo "================================================================="
 echo "================================================================="
-Print_Style "Para detener el Servidor: docker container stop $ServerName" "$CYAN"
+Print_Style "Para detener el Servidor: sudo docker container stop $ServerName" "$CYAN"
 echo "================================================================="
 sleep 2s
-Print_Style "Para iniciar el Servidor: docker container start $ServerName" "$MAGENTA"
+Print_Style "Para iniciar el Servidor: sudo docker container start $ServerName" "$MAGENTA"
 echo "================================================================="
 sleep 2s
-Print_Style "Para reiniciar el Servidor: docker container restart $ServerName" "$YELLOW"
+Print_Style "Para reiniciar el Servidor: sudo docker container restart $ServerName" "$YELLOW"
 echo "================================================================="
 echo "================================================================="
 echo "================================================================="
