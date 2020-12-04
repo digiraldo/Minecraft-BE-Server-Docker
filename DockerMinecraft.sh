@@ -98,7 +98,7 @@ Print_Style "Actualisando el apt índice del paquete..." "$CYAN"
 sleep 2s
 sudo apt-get update
 
-Print_Style "Instalando la última versión de Docker Engine y container..." "$CYAN"
+Print_Style "Instalando la última versión de Docker Engine y containerd..." "$CYAN"
 sleep 2s
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 
@@ -122,8 +122,8 @@ fi
 
 # Configurando Nombre del Servidor: $ServerName
 echo "========================================================================="
-echo "Ingrese un nombre corto para el servidor nuevo o existente..."
-echo "Se utilizará como nombre de la carpeta y el nombre del servicio..."
+Print_Style "Ingrese un nombre corto para el servidor nuevo o existente," "$RED"
+Print_Style "se utilizará como nombre de la carpeta y el nombre del servicio" "$RED"
 echo "========================================================================="
 read_with_prompt ServerName "Nombre de Servidor"
 
@@ -182,7 +182,7 @@ cd ~
 Print_Style "Iplementando el Servidor..." "$GREEN"
 sleep 2s
 sudo docker run -itd --restart=always --name=$ServerName --net=host \
-  -v $DirName/minecraftbe/$ServerName:/$ServerName \
+  -v $DirName/minecraftbe/$ServerName:/data \
   lomot/minecraft-bedrock:1.16.100.04
 
 # Haga una copia de seguridad de sus datos
@@ -202,7 +202,7 @@ sudo docker container rm $ServerName
 Print_Style "Iniciando nuevo contenedor..." "$BLUE"
 sleep 2s
 sudo docker run -itd --restart=always --name=$ServerName --net=host \
-  -v $DirName/minecraftbe/$ServerName:/$ServerName \
+  -v $DirName/minecraftbe/$ServerName:/data \
   lomot/minecraft-bedrock:1.16.100.04
 
 # Descargar cloud.sh desde el repositorio
