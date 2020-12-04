@@ -287,10 +287,13 @@ sudo sed -n "/server-portv6=/p" server.properties | sed 's/server-portv6=/Puerto
 echo "========================================================================="
 sleep 3s
 
+# Iniciando Servidor
+Print_Style "Iniciando el Servidor con: docker container start $ServerName" "$BLINK"
+sudo docker container start $ServerName
 
 
 else
-Print_Style "Actualizando el Servidor de Minecraft Bedrock Edition en Docker" "$MAGENTA"
+Print_Style "Instalando el Servidor de Minecraft Bedrock Edition en Docker" "$MAGENTA"
 sleep 4s
 #-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-
 
@@ -465,6 +468,8 @@ sudo sed -n "/server-port=/p" server.properties | sed 's/server-port=/Puerto IPV
 sudo sed -n "/server-portv6=/p" server.properties | sed 's/server-portv6=/Puerto IPV6: ............ /'
 echo "========================================================================="
 sleep 3s
+
+
 
 echo "========================================================================="
     echo -n "¿Iniciar Configuracion del Servidor: $ServerName? (y/n)"
