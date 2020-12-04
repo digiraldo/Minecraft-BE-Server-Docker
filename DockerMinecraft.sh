@@ -152,157 +152,7 @@ echo "Para eliminar algún container existente seleccione Si (y)"
     echo -n "¿Eliminar container existente? (y/n)"
     read answer < /dev/tty
     if [ "$answer" != "${answer#[Yy]}" ]; then
-      # Crear copia de seguridad en la nube cloudname
-        echo "========================================================================="
-        Print_Style "Debes escribir o copiar el Nombre del Container (NAMES) " "$CYAN"
-        read_with_prompt NameC "Nombre del container"
-        echo "========================================================================="
-        sudo docker container stop $NameC
-        sleep 2s
-        sudo docker container rm $NameC
-        Print_Style "Eliminando container $NameC" "$MAGENTA"
-        sleep 2s
-        echo "========================================================================="
-        cd ~
-        cd minecraftbe
-            if [ ! -d "$NameC" ]; then
-            echo "========================================================================="
-            Print_Style "No existe directorio para eliminar $NameC" "$MAGENTA"
-            echo "========================================================================="
-            else
-            #sudo rm -rf $NameC
-            Print_Style "Buscando directorio $NameC" "$MAGENTA"
-        Print_Style "=========================ARCHIVOS Y/O DIRECTORIOS========================" "$MAGENTA"
-            ls -l
-        Print_Style "=========================ARCHIVOS Y/O DIRECTORIOS========================" "$MAGENTA"
-            fi
-        sleep 3s
-    fi
-
-# Obtener la ruta del directorio de inicio y el nombre de usuario
-  DirName=$(readlink -e ~)
-  UserName=$(whoami)
-  cd ~
-  cd minecraftbe
-  cd $ServerName
-  echo "El directorio del servidor es: $DirName/minecraftbe/$ServerName"
-echo "========================================================================="
-
- # Eliminar scripts existentes
-  sudo rm -rf start.sh stop.sh restart.sh cloud.sh back.sh
-
-echo "========================================================================="
-sleep 2s
-
-# Descargar start.sh desde el repositorio
- echo "========================================================================="
-  echo "Tomando start.sh del repositorio..."
-  wget -O start.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/master/start.sh
-  chmod +x start.sh
-  sudo sed -i "s:dirname:$DirName:g" start.sh
-  sudo sed -i "s:servername:$ServerName:g" start.sh
-
-# Descargar config.sh desde el repositorio
- echo "========================================================================="
-  echo "Tomando config.sh del repositorio..."
-  wget -O config.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/master/config.sh
-  chmod +x config.sh
-  sudo sed -i "s:dirname:$DirName:g" config.sh
-  sudo sed -i "s:servername:$ServerName:g" config.sh
-
-# Haga una copia de seguridad de sus datos
-Print_Style "Realizando copia de seguridad de datos $DirName/minecraftbe/$ServerName..." "$GREEN"
-sleep 2s
-sudo cp -r $DirName/minecraftbe/$ServerName $DirName/minecraftbe/$ServerName.bak
-
-# Salga y elimine el contenedor antiguo
-Print_Style "Deteniendo el Servidor..." "$YELLOW"
-sleep 2s
-sudo docker container stop $ServerName
-Print_Style "Eliminando el contenedor antiguo..." "$MAGENTA"
-sleep 2s
-sudo docker container rm $ServerName
-
-# Inicie un nuevo contenedor
-Print_Style "Iniciando nuevo contenedor..." "$BLUE"
-sleep 2s
-sudo docker run -itd --restart=always --name=$ServerName --net=host \
-  -v $DirName/minecraftbe/$ServerName:/data \
-  lomot/minecraft-bedrock:1.16.100.04
-
-
-cd ~
-echo -n "¿Iniciar el servidor de Minecraft automáticamente? (y/n)?"
-  read answer < /dev/tty
-  if [ "$answer" != "${answer#[Yy]}" ]; then
-  #    sudo docker container enable $ServerName
- #   sudo systemctl enable $ServerName.service
-
-    # Reinicio automático configurado a las 4 am
-    echo "========================================================================="
-    echo -n "¿Reiniciar automáticamente y hacer una copia de seguridad del servidor a las 4 am todos los días? (y/n)"
-    read answer < /dev/tty
-    if [ "$answer" != "${answer#[Yy]}" ]; then
-      croncmd="$DirName/minecraftbe/$ServerName/restart.sh"
-      cronjob="0 4 * * * $croncmd"
-      ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
-      echo "Reinicio diario programado. Para cambiar la hora o eliminar el reinicio automático, escriba crontab -e"
-    fi
-  fi
-
-# Gestionar el servidor
-Print_Style "Entrar o salir de la consola de juegos..." "$BLUE"
-sudo docker attach $ServerName
-Print_Style "Para salir, presione ctrl+p+q" "$BLUE"
-Print_Style "Para matar el proceso, presione ctrl+c o ctrl+d" "$BLUE"
-sleep 3s
-
-# Gestionar el servidor minecraft (detener / iniciar / reiniciar / eliminar)
-echo "================================================================="
-echo "================================================================="
-echo "================================================================="
-Print_Style "Para detener el Servidor: docker container stop $ServerName" "$CYAN"
-echo "================================================================="
-sleep 2s
-Print_Style "Para iniciar el Servidor: docker container start $ServerName" "$MAGENTA"
-echo "================================================================="
-sleep 2s
-Print_Style "Para reiniciar el Servidor: docker container restart $ServerName" "$YELLOW"
-echo "================================================================="
-echo "================================================================="
-echo "================================================================="
-sleep 4s
-echo "Reiniciando el Servidor:"
-sudo docker container restart $ServerName
-echo "================================================================="
-sleep 2s
-
-cd ~
-cd minecraftbe
-cd $ServerName
-
-Print_Style "Configuración del Servidor servername..." "$GREEN"
-echo "========================================================================="
-sudo sed -n "/server-name=/p" server.properties | sed 's/server-name=/Nombre del Servidor: .... /'
-sudo sed -n "/level-name=/p" server.properties | sed 's/level-name=/Nombre del Nivel: ....... /'
-sudo sed -n "/gamemode=/p" server.properties | sed 's/gamemode=/Modo del Juego: ......... /'
-sudo sed -n "/difficulty=/p" server.properties | sed 's/difficulty=/Dificultad del Mundo: ... /'
-sudo sed -n "/allow-cheats=/p" server.properties | sed 's/allow-cheats=/Usar Trucos: ............ /'
-sudo sed -n "/max-players=/p" server.properties | sed 's/max-players=/Jugadores Máximos: ...... /'
-sudo sed -n "/white-list=/p" server.properties | sed 's/white-list=/Permiso de Jugadores: ... /'
-sudo sed -n "/level-seed=/p" server.properties | sed 's/level-seed=/Número de Semilla: ...... /'
-sudo sed -n "/server-port=/p" server.properties | sed 's/server-port=/Puerto IPV4: ............ /'
-sudo sed -n "/server-portv6=/p" server.properties | sed 's/server-portv6=/Puerto IPV6: ............ /'
-echo "========================================================================="
-sleep 3s
-
-# Iniciando Servidor
-Print_Style "Iniciando el Servidor con: docker container start $ServerName" "$BLINK"
-sudo docker container start $ServerName
-
-fi
-#####else
-Print_Style "Instalando el Servidor de Minecraft Bedrock Edition en Docker" "$MAGENTA"
+      Print_Style "Instalando el Servidor de Minecraft Bedrock Edition en Docker" "$MAGENTA"
 sleep 4s
 #-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-
 
@@ -498,6 +348,165 @@ echo "========================================================================="
         /bin/bash $DirName/minecraftbe/$ServerName/config.sh
     fi
 echo "========================================================================="
+
+
+
+
+ 
+
+fi
+#####else
+
+
+     # Crear copia de seguridad en la nube cloudname
+        echo "========================================================================="
+        Print_Style "Debes escribir o copiar el Nombre del Container (NAMES) " "$CYAN"
+        read_with_prompt NameC "Nombre del container"
+        echo "========================================================================="
+        sudo docker container stop $NameC
+        sleep 2s
+        sudo docker container rm $NameC
+        Print_Style "Eliminando container $NameC" "$MAGENTA"
+        sleep 2s
+        echo "========================================================================="
+        cd ~
+        cd minecraftbe
+            if [ ! -d "$NameC" ]; then
+            echo "========================================================================="
+            Print_Style "No existe directorio para eliminar $NameC" "$MAGENTA"
+            echo "========================================================================="
+            else
+            #sudo rm -rf $NameC
+            Print_Style "Buscando directorio $NameC" "$MAGENTA"
+        Print_Style "=========================ARCHIVOS Y/O DIRECTORIOS========================" "$MAGENTA"
+            ls -l
+        Print_Style "=========================ARCHIVOS Y/O DIRECTORIOS========================" "$MAGENTA"
+            fi
+        sleep 3s
+    fi
+
+# Obtener la ruta del directorio de inicio y el nombre de usuario
+  DirName=$(readlink -e ~)
+  UserName=$(whoami)
+  cd ~
+  cd minecraftbe
+  cd $ServerName
+  echo "El directorio del servidor es: $DirName/minecraftbe/$ServerName"
+echo "========================================================================="
+
+ # Eliminar scripts existentes
+  sudo rm -rf start.sh stop.sh restart.sh cloud.sh back.sh
+
+echo "========================================================================="
+sleep 2s
+
+# Descargar start.sh desde el repositorio
+ echo "========================================================================="
+  echo "Tomando start.sh del repositorio..."
+  wget -O start.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/master/start.sh
+  chmod +x start.sh
+  sudo sed -i "s:dirname:$DirName:g" start.sh
+  sudo sed -i "s:servername:$ServerName:g" start.sh
+
+# Descargar config.sh desde el repositorio
+ echo "========================================================================="
+  echo "Tomando config.sh del repositorio..."
+  wget -O config.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/master/config.sh
+  chmod +x config.sh
+  sudo sed -i "s:dirname:$DirName:g" config.sh
+  sudo sed -i "s:servername:$ServerName:g" config.sh
+
+# Haga una copia de seguridad de sus datos
+Print_Style "Realizando copia de seguridad de datos $DirName/minecraftbe/$ServerName..." "$GREEN"
+sleep 2s
+sudo cp -r $DirName/minecraftbe/$ServerName $DirName/minecraftbe/$ServerName.bak
+
+# Salga y elimine el contenedor antiguo
+Print_Style "Deteniendo el Servidor..." "$YELLOW"
+sleep 2s
+sudo docker container stop $ServerName
+Print_Style "Eliminando el contenedor antiguo..." "$MAGENTA"
+sleep 2s
+sudo docker container rm $ServerName
+
+# Inicie un nuevo contenedor
+Print_Style "Iniciando nuevo contenedor..." "$BLUE"
+sleep 2s
+sudo docker run -itd --restart=always --name=$ServerName --net=host \
+  -v $DirName/minecraftbe/$ServerName:/data \
+  lomot/minecraft-bedrock:1.16.100.04
+
+
+cd ~
+echo -n "¿Iniciar el servidor de Minecraft automáticamente? (y/n)?"
+  read answer < /dev/tty
+  if [ "$answer" != "${answer#[Yy]}" ]; then
+  #    sudo docker container enable $ServerName
+ #   sudo systemctl enable $ServerName.service
+
+    # Reinicio automático configurado a las 4 am
+    echo "========================================================================="
+    echo -n "¿Reiniciar automáticamente y hacer una copia de seguridad del servidor a las 4 am todos los días? (y/n)"
+    read answer < /dev/tty
+    if [ "$answer" != "${answer#[Yy]}" ]; then
+      croncmd="$DirName/minecraftbe/$ServerName/restart.sh"
+      cronjob="0 4 * * * $croncmd"
+      ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
+      echo "Reinicio diario programado. Para cambiar la hora o eliminar el reinicio automático, escriba crontab -e"
+    fi
+  fi
+
+# Gestionar el servidor
+Print_Style "Entrar o salir de la consola de juegos..." "$BLUE"
+sudo docker attach $ServerName
+Print_Style "Para salir, presione ctrl+p+q" "$BLUE"
+Print_Style "Para matar el proceso, presione ctrl+c o ctrl+d" "$BLUE"
+sleep 3s
+
+# Gestionar el servidor minecraft (detener / iniciar / reiniciar / eliminar)
+echo "================================================================="
+echo "================================================================="
+echo "================================================================="
+Print_Style "Para detener el Servidor: docker container stop $ServerName" "$CYAN"
+echo "================================================================="
+sleep 2s
+Print_Style "Para iniciar el Servidor: docker container start $ServerName" "$MAGENTA"
+echo "================================================================="
+sleep 2s
+Print_Style "Para reiniciar el Servidor: docker container restart $ServerName" "$YELLOW"
+echo "================================================================="
+echo "================================================================="
+echo "================================================================="
+sleep 4s
+echo "Reiniciando el Servidor:"
+sudo docker container restart $ServerName
+echo "================================================================="
+sleep 2s
+
+cd ~
+cd minecraftbe
+cd $ServerName
+
+Print_Style "Configuración del Servidor servername..." "$GREEN"
+echo "========================================================================="
+sudo sed -n "/server-name=/p" server.properties | sed 's/server-name=/Nombre del Servidor: .... /'
+sudo sed -n "/level-name=/p" server.properties | sed 's/level-name=/Nombre del Nivel: ....... /'
+sudo sed -n "/gamemode=/p" server.properties | sed 's/gamemode=/Modo del Juego: ......... /'
+sudo sed -n "/difficulty=/p" server.properties | sed 's/difficulty=/Dificultad del Mundo: ... /'
+sudo sed -n "/allow-cheats=/p" server.properties | sed 's/allow-cheats=/Usar Trucos: ............ /'
+sudo sed -n "/max-players=/p" server.properties | sed 's/max-players=/Jugadores Máximos: ...... /'
+sudo sed -n "/white-list=/p" server.properties | sed 's/white-list=/Permiso de Jugadores: ... /'
+sudo sed -n "/level-seed=/p" server.properties | sed 's/level-seed=/Número de Semilla: ...... /'
+sudo sed -n "/server-port=/p" server.properties | sed 's/server-port=/Puerto IPV4: ............ /'
+sudo sed -n "/server-portv6=/p" server.properties | sed 's/server-portv6=/Puerto IPV6: ............ /'
+echo "========================================================================="
+sleep 3s
+
+# Iniciando Servidor
+Print_Style "Iniciando el Servidor con: docker container start $ServerName" "$BLINK"
+sudo docker container start $ServerName
+
+
 ####fi
 
 
