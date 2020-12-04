@@ -98,7 +98,7 @@ Print_Style "Actualisando el apt índice del paquete..." "$CYAN"
 sleep 2s
 sudo apt-get update
 
-Print_Style "Instalando la última versión de Docker Engine y containerd..." "$CYAN"
+Print_Style "Instalando la última versión de Docker Engine y container..." "$CYAN"
 sleep 2s
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 
@@ -148,6 +148,8 @@ cd ~
 cd minecraftbe
 cd $ServerName
 
+sudo rm -rf config.sh
+sleep 2s
 # Descargar config.sh desde el repositorio
  echo "========================================================================="
   echo "Tomando config.sh del repositorio..."
@@ -160,7 +162,7 @@ cd $ServerName
 #if [ -d "$ServerName" ]; then
 #  echo "¡El directorio minecraftbe/$ServerName ya existe!  Actualizando scripts y configurando el servicio..."
 #echo "========================================================================="
-#speed 4s
+#sleep 4s
   # Obtener la ruta del directorio de inicio y el nombre de usuario
 #  DirName=$(readlink -e ~)
 #  UserName=$(whoami)
@@ -239,18 +241,22 @@ echo "================================================================="
 sudo docker container restart $ServerName
 sleep 4s
 
+cd ~
+cd minecraftbe
+cd $ServerName
+
 Print_Style "Configuración del Servidor servername..." "$GREEN"
 echo "========================================================================="
-sudo sed -n "/server-name=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/server-name=/Nombre del Servidor: .... /'
-sudo sed -n "/level-name=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/level-name=/Nombre del Nivel: ....... /'
-sudo sed -n "/gamemode=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/gamemode=/Modo del Juego: ......... /'
-sudo sed -n "/difficulty=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/difficulty=/Dificultad del Mundo: ... /'
-sudo sed -n "/allow-cheats=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/allow-cheats=/Usar Trucos: ............ /'
-sudo sed -n "/max-players=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/max-players=/Jugadores Máximos: ...... /'
-sudo sed -n "/white-list=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/white-list=/Permiso de Jugadores: ... /'
-sudo sed -n "/level-seed=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/level-seed=/Número de Semilla: ...... /'
-sudo sed -n "/server-port=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/server-port=/Puerto IPV4: ............ /'
-sudo sed -n "/server-portv6=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/server-portv6=/Puerto IPV6: ............ /'
+sudo sed -n "/server-name=/p" server.properties | sed 's/server-name=/Nombre del Servidor: .... /'
+sudo sed -n "/level-name=/p" server.properties | sed 's/level-name=/Nombre del Nivel: ....... /'
+sudo sed -n "/gamemode=/p" server.properties | sed 's/gamemode=/Modo del Juego: ......... /'
+sudo sed -n "/difficulty=/p" server.properties | sed 's/difficulty=/Dificultad del Mundo: ... /'
+sudo sed -n "/allow-cheats=/p" server.properties | sed 's/allow-cheats=/Usar Trucos: ............ /'
+sudo sed -n "/max-players=/p" server.properties | sed 's/max-players=/Jugadores Máximos: ...... /'
+sudo sed -n "/white-list=/p" server.properties | sed 's/white-list=/Permiso de Jugadores: ... /'
+sudo sed -n "/level-seed=/p" server.properties | sed 's/level-seed=/Número de Semilla: ...... /'
+sudo sed -n "/server-port=/p" server.properties | sed 's/server-port=/Puerto IPV4: ............ /'
+sudo sed -n "/server-portv6=/p" server.properties | sed 's/server-portv6=/Puerto IPV6: ............ /'
 echo "========================================================================="
 sleep 3s
 
