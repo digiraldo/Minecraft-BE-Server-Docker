@@ -94,7 +94,7 @@ sudo add-apt-repository \
    $(lsb_release -cs) \
    stable"
 
-# INSTALAR DOCKER ENGINE
+# Instlar Docker Engine
 Print_Style "Actualisando el apt índice del paquete..." "$CYAN"
 sleep 2s
 sudo apt-get update
@@ -102,3 +102,145 @@ sudo apt-get update
 Print_Style "Instalando la última versión de Docker Engine y containerd..." "$CYAN"
 sleep 2s
 sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+# Verifique si el directorio principal del servidor de Minecraft ya existe
+cd ~
+if [ ! -d "minecraftbe" ]; then
+  mkdir minecraftbe
+  cd minecraftbe
+else
+  cd minecraftbe
+  if [ -f "bedrock_server" ]; then
+    echo "Migración del antiguo servidor Bedrock a minecraftpe/old"
+    cd ~
+    mv minecraftbe old
+    mkdir minecraftbe
+    mv old minecraftbe/old
+    cd minecraftbe
+    echo "Migración completa a minecraftbe/old"
+  fi
+fi
+
+# Configurando Nombre del Servidor: $ServerName
+echo "========================================================================="
+echo "Ingrese un nombre corto para el servidor nuevo o existente..."
+echo "Se utilizará como nombre de la carpeta y el nombre del servicio..."
+echo "========================================================================="
+read_with_prompt ServerName "Nombre de Servidor"
+
+echo "========================================================================="
+if [ -d "$ServerName" ]; then
+  echo "¡El directorio minecraftbe/$ServerName ya existe!  Actualizando scripts y configurando el servicio..."
+echo "========================================================================="
+speed 4s
+  # Obtener la ruta del directorio de inicio y el nombre de usuario
+  DirName=$(readlink -e ~)
+  UserName=$(whoami)
+  cd ~
+  cd minecraftbe
+  cd $ServerName
+  echo "El directorio del servidor es: $DirName/minecraftbe/$ServerName"
+echo "========================================================================="
+
+# Crear una carpeta para los datos del servidor
+#Print_Style "Creando Carpeta para los datos del Mundo..." "$GREEN"
+#sleep 2s
+#sudo mkdir -p /opt/mcpe-data
+
+# Implementar el servidor
+Print_Style "Iplementando el Servidor..." "$GREEN"
+sleep 2s
+sudo docker run -itd --restart=always --name=$ServerName --net=host \
+  -v $DirName/minecraftbe/$ServerName:/$ServerName \
+  lomot/minecraft-bedrock:1.16.100.04
+
+# Haga una copia de seguridad de sus datos
+Print_Style "Realizando copia de seguridad de datos $DirName/minecraftbe/$ServerName..." "$GREEN"
+sleep 2s
+sudo cp -r $DirName/minecraftbe/$ServerName $DirName/minecraftbe/$ServerName.bak
+
+# Salga y elimine el contenedor antiguo
+Print_Style "Deteniendo el Servidor..." "$YELLOW"
+sleep 2s
+sudo docker container stop $ServerName
+Print_Style "Eliminando el contenedor antiguo..." "$MAGENTA"
+sleep 2s
+sudo docker container rm $ServerName
+
+# Inicie un nuevo contenedor
+Print_Style "Iniciando nuevo contenedor..." "$BLUE"
+sleep 2s
+sudo docker run -itd --restart=always --name=$ServerName --net=host \
+  -v $DirName/minecraftbe/$ServerName:/$ServerName \
+  lomot/minecraft-bedrock:1.16.100.04
+
+# Descargar cloud.sh desde el repositorio
+#echo "========================================================================="
+#echo "Tomando restart.sh del repositorio..."
+#wget -O cloud.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/main/cloud.sh
+#chmod +x cloud.sh
+#sudo sed -i "s:dirname:$DirName:g" cloud.sh
+#sudo sed -i "s/servername/$ServerName/g" cloud.sh
+
+# Descargar back.sh desde el repositorio
+#echo "========================================================================="
+#  echo "Tomando back.sh del repositorio..."
+#  wget -O back.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/main/back.sh
+#  chmod +x back.sh
+#  sudo sed -i "s:dirname:$DirName:g" back.sh
+#  sudo sed -i "s:servername:$ServerName:g" back.sh
+
+# Descargar config.sh desde el repositorio
+ echo "========================================================================="
+  echo "Tomando config.sh del repositorio..."
+  wget -O config.sh https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/main/config.sh
+  chmod +x config.sh
+#  sudo sed -i "s:dirname:$DirName:g" config.sh
+  sudo sed -i "s:servername:$ServerName:g" config.sh
+
+# Gestionar el servidor
+Print_Style "Entrar o salir de la consola de juegos..." "$CYAN"
+docker attach $ServerName
+Print_Style "Para salir, presione ctrl+p+q" "$YELLOW"
+Print_Style "Para matar el proceso, presione ctrl+c o ctrl+d" "$MAGENTA"
+sleep s
+
+# Gestionar el servidor minecraft (detener / iniciar / reiniciar / eliminar)
+echo "================================================================="
+Print_Style "Para detener el Servidor: docker container stop $ServerName" "$CYAN"
+echo "================================================================="
+sleep 2s
+Print_Style "Para iniciar el Servidor: docker container start $ServerName" "$MAGENTA"
+echo "================================================================="
+sleep 2s
+Print_Style "Para reiniciar el Servidor: docker container restart $ServerName" "$YELLOW"
+echo "================================================================="
+sudo docker container restart $ServerName
+sleep 4s
+
+Print_Style "Configuración del Servidor servername..." "$GREEN"
+echo "========================================================================="
+sudo sed -n "/server-name=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/server-name=/Nombre del Servidor: .... /'
+sudo sed -n "/level-name=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/level-name=/Nombre del Nivel: ....... /'
+sudo sed -n "/gamemode=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/gamemode=/Modo del Juego: ......... /'
+sudo sed -n "/difficulty=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/difficulty=/Dificultad del Mundo: ... /'
+sudo sed -n "/allow-cheats=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/allow-cheats=/Usar Trucos: ............ /'
+sudo sed -n "/max-players=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/max-players=/Jugadores Máximos: ...... /'
+sudo sed -n "/white-list=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/white-list=/Permiso de Jugadores: ... /'
+sudo sed -n "/level-seed=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/level-seed=/Número de Semilla: ...... /'
+sudo sed -n "/server-port=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/server-port=/Puerto IPV4: ............ /'
+sudo sed -n "/server-portv6=/p" $DirName/minecraftbe/$ServerName/server.properties | sed 's/server-portv6=/Puerto IPV6: ............ /'
+echo "========================================================================="
+sleep 3s
+
+echo "========================================================================="
+    echo -n "¿Iniciar Configuracion del Servidor: $ServerName? (y/n)"
+    read answer < /dev/tty
+    if [ "$answer" != "${answer#[Yy]}" ]; then
+      # Crear copia de seguridad en la nube cloudname
+        echo "========================================================================="
+        echo "Iniciando Configuracion con config.sh"
+        echo "========================================================================="
+        sleep 3s
+        /bin/bash $DirName/minecraftbe/$ServerName/config.sh
+    fi
