@@ -299,8 +299,8 @@ sleep 3s
 Print_Style "Iniciando el Servidor con: docker container start $ServerName" "$BLINK"
 sudo docker container start $ServerName
 
-
-else
+fi
+#####else
 Print_Style "Instalando el Servidor de Minecraft Bedrock Edition en Docker" "$MAGENTA"
 sleep 4s
 #-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-No-
@@ -496,9 +496,9 @@ echo "========================================================================="
         sleep 3s
         /bin/bash $DirName/minecraftbe/$ServerName/config.sh
     fi
-
-fi
 echo "========================================================================="
+####fi
+
 
 
 #################################################################################################
