@@ -469,8 +469,6 @@ sudo sed -n "/server-portv6=/p" server.properties | sed 's/server-portv6=/Puerto
 echo "========================================================================="
 sleep 3s
 
-
-
 echo "========================================================================="
     echo -n "¿Iniciar Configuracion del Servidor: $ServerName? (y/n)"
     read answer < /dev/tty
@@ -482,7 +480,6 @@ echo "========================================================================="
         sleep 3s
         /bin/bash $DirName/minecraftbe/$ServerName/config.sh
     fi
-
 
 fi
 echo "========================================================================="
