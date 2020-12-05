@@ -110,26 +110,26 @@ sudo add-apt-repository ppa:ondrej/php -y &&
 sudo apt-get update -y &&
 
 cd / &&
-mkdir bedrock-admin-panel
-apt install git -y &&
-git clone https://github.com/Arslanoov/bedrock-admin-panel.git &&
+sudo mkdir bedrock-admin-panel
+sudo apt install git -y &&
+sudo git clone https://github.com/Arslanoov/bedrock-admin-panel.git &&
 cd /bedrock-admin-panel &&
 
 #apt install docker.io -y &&
 sudo gpasswd -a ${USER} docker &&
 sudo service docker restart &&
 
-mkdir -p /opt/mcpe-data &&
-docker run -itd --restart=always --name=mcpe --net=host \
+sudo mkdir -p /opt/mcpe-data &&
+sudo docker run -itd --restart=always --name=mcpe --net=host \
   -v /opt/mcpe-data:/data \
   lomot/minecraft-bedrock:1.16.100.04 &&
 
-apt install docker-compose -y &&
-apt install make -y &&
-make init &&
+sudo apt install docker-compose -y &&
+sudo apt install make -y &&
+sudo make init &&
 
-mkdir /opt/mcpe-data/backups && chmod -R 777 /opt/mcpe-data/backups &&
-chmod -R 777 /opt/mcpe-data/worlds &&
+sudo mkdir /opt/mcpe-data/backups && chmod -R 777 /opt/mcpe-data/backups &&
+sudo chmod -R 777 /opt/mcpe-data/worlds &&
 
 echo 'www-data ALL=NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo &&
 
@@ -149,14 +149,14 @@ sudo sh -c "echo '$IPV4' >> /bedrock-admin-panel/web/server.ip" &&
 sudo apt-get install php7.4 -y &&
 
 cd /bedrock-admin-panel/web &&
-chmod -R 777 var &&
-docker-compose run --rm php-cli chmod -R 777 /app/data &&
+sudo chmod -R 777 var &&
+sudo docker-compose run --rm php-cli chmod -R 777 /app/data &&
 cd .. &&
-docker-compose up -d &&
+sudo docker-compose up -d &&
 cd web &&
-php generate.php
+sudo php generate.php
 
 #Second command:
 
 cd /bedrock-admin-panel &&
-nohup php -S 0.0.0.0:57152 -t command/ > /dev/null 2>&1 &
+sudo nohup php -S 0.0.0.0:57152 -t command/ > /dev/null 2>&1 &
