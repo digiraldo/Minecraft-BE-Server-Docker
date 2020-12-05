@@ -122,20 +122,19 @@ sudo apt install make -y
 sudo make init
 
 # Verifique si el directorio principal del servidor de Minecraft ya existe
-cd ~
-if [ ! -d "minecraftbe" ]; then
-  mkdir minecraftbe
-  cd minecraftbe
+cd /opt
+if [ ! -d "mcpe-data" ]; then
+  sudo mkdir mcpe-data
+  cd mcpe-data
 else
-  cd minecraftbe
+  cd mcpe-data
   if [ -f "bedrock_server" ]; then
     echo "Migración del antiguo servidor Bedrock a minecraftpe/old"
-    cd ~
-    mv minecraftbe old
-    mkdir minecraftbe
-    mv old minecraftbe/old
-    cd minecraftbe
-    echo "Migración completa a minecraftbe/old"
+    cd mcpe-data
+    sudo mkdir mcpe-data
+    mv old sudo mkdir mcpe-data/old
+    cd mcpe-data
+    echo "Migración completa a cd mcpe-data/old"
   fi
 fi
 
@@ -361,9 +360,9 @@ echo "Para eliminar algún container existente seleccione Si (y)"
     fi
 
 # Crear directorio de servidor
-echo "Creando directorio del servidor de Minecraft (~/minecraftbe/$ServerName)..."
-cd ~
-cd minecraftbe
+echo "Creando directorio del servidor de Minecraft (/opt/mcpe-data/$ServerName)..."
+sudo mkdir -p /opt/mcpe-data
+cd /opt/mcpe-data
 sudo mkdir $ServerName
 cd $ServerName
 # mkdir downloads
@@ -375,13 +374,13 @@ cd ~
 Print_Style "Iplementando el Servidor..." "$GREEN"
 sleep 2s
 sudo docker run -itd --restart=always --name=$ServerName --net=host \
-  -v $DirName/minecraftbe/$ServerName:/data \
+  -v /opt/mcpe-data:/data \
   lomot/minecraft-bedrock:1.16.100.04
 
 # Haga una copia de seguridad de sus datos
-Print_Style "Realizando copia de seguridad de datos $DirName/minecraftbe/$ServerName..." "$GREEN"
+Print_Style "Realizando copia de seguridad de datos /opt/mcpe-data..." "$GREEN"
 sleep 2s
-sudo cp -r $DirName/minecraftbe/$ServerName $DirName/minecraftbe/$ServerName.bak
+sudo cp -r /opt/mcpe-data /opt/mcpe-data.bak
 
 # Salga y elimine el contenedor antiguo
 Print_Style "Deteniendo el Servidor..." "$YELLOW"
@@ -395,13 +394,13 @@ sudo docker container rm $ServerName
 Print_Style "Iniciando nuevo contenedor..." "$BLUE"
 sleep 2s
 sudo docker run -itd --restart=always --name=$ServerName --net=host \
-  -v $DirName/minecraftbe/$ServerName:/data \
+  -v /opt/mcpe-data:/data \
   lomot/minecraft-bedrock:1.16.100.04
 
 ### ### ###
 Print_Style "Generando permisos a backups y worlds..." "$CYAN"
-chmod -R 777 $DirName/minecraftbe/$ServerName/backups
-chmod -R 777 $DirName/minecraftbe/$ServerName/worlds
+chmod -R 777 /opt/mcpe-data/backups
+chmod -R 777 /opt/mcpe-data/worlds
 sleep 2s
 
 sudo service docker stop
@@ -450,8 +449,7 @@ echo "========================================================================="
 sleep 3s
 sudo docker attach $ServerName
 
-cd ~
-cd minecraftbe
+cd /opt/mcpe-data
 cd $ServerName
 
 sleep 2s
@@ -509,7 +507,7 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
   echo -n "¿Reiniciar automáticamente y hacer una copia de seguridad del servidor a las 4 am todos los días? (y/n)"
   read answer < /dev/tty
   if [ "$answer" != "${answer#[Yy]}" ]; then
-    croncmd="$DirName/minecraftbe/$ServerName/restart.sh"
+    croncmd="/opt/mcpe-data/restart.sh"
     cronjob="0 4 * * * $croncmd"
     ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
     echo "Reinicio diario programado. Para cambiar la hora o eliminar el reinicio automático, escriba crontab -e"
@@ -536,8 +534,7 @@ sudo docker container restart $ServerName
 echo "================================================================="
 sleep 2s
 
-cd ~
-cd minecraftbe
+cd /opt/mcpe-data
 cd $ServerName
 
 Print_Style "Configuración del Servidor servername..." "$GREEN"
@@ -564,7 +561,7 @@ echo "========================================================================="
         echo "Iniciando Configuracion con config.sh"
         echo "========================================================================="
         sleep 3s
-        /bin/bash $DirName/minecraftbe/$ServerName/config.sh
+        /bin/bash /opt/mcpe-data/config.sh
     fi
 echo "========================================================================="
 
