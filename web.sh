@@ -70,7 +70,10 @@ sudo apt -y install software-properties-common &&
 sudo add-apt-repository ppa:ondrej/php -y &&
 sudo apt-get update -y &&
 
+
+
 cd / &&
+mkdir bedrock-admin-panel
 apt install git -y &&
 git clone https://github.com/Arslanoov/bedrock-admin-panel.git &&
 cd /bedrock-admin-panel &&
