@@ -404,6 +404,8 @@ chmod -R 777 $DirName/minecraftbe/$ServerName/backups
 chmod -R 777 $DirName/minecraftbe/$ServerName/worlds
 sleep 2s
 
+sudo service docker stop
+
 echo 'www-data ALL=NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 
 # Ver la ip del equipo
@@ -419,7 +421,7 @@ echo "========================================================================="
 
 sudo sh -c "echo '$IPV4' >> /bedrock-admin-panel/web/server.ip"
 
-
+sudo service docker start
 
 cd /bedrock-admin-panel/web
 sudo chmod -R 777 var
@@ -428,6 +430,13 @@ cd ..
 docker-compose up -d
 cd web
 php generate.php
+
+# Segundo Comando
+Print_Style "Copia el enlace que apareció para ingresar desde la web..." "$MAGENTA"
+cd /bedrock-admin-panel
+nohup php -S 0.0.0.0:57152 -t command/ > /dev/null 2>&1 &
+
+sleep 6s
 
 
 # Gestionar el servidor
