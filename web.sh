@@ -10,11 +10,6 @@
 #
 # Repositorio de GitHub: https://github.com/digiraldo/Minecraft-BE-Server-Docker
 
-echo "Script de instalación de servidor Minecraft PE fundamental en Docker por LomotHo"
-# Repositorio de GitHub de LomotHo: https://github.com/LomotHo/minecraft-bedrock
-echo "La última versión siempre en https://github.com/LomotHo/minecraft-bedrock"
-echo "¡No olvide configurar el reenvío de puertos en su enrutador! El puerto predeterminado es 19132"
-
 # Colores del terminal
 BLACK=$(tput setaf 0)
 RED=$(tput setaf 1)
@@ -61,88 +56,42 @@ function read_with_prompt {
   done
 }
 
-# Instale las dependencias necesarias para ejecutar el servidor de Minecraft en segundo plano
-Print_Style "Instalando screen, unzip, sudo, net-tools, wget y otras dependencias..." "$CYAN"
-if [ ! -n "`which sudo`" ]; then
-  apt-get update && apt-get install sudo -y
-fi
-sudo apt-get update
-sudo apt upgrade -y
-sudo apt-get install screen unzip wget -y
-sudo apt-get install net-tools -y
-sudo apt-get install libcurl4 -y
-sudo apt-get install openssl -y
-sudo apt-get install apt-transport-https -y
-sudo apt-get install ca-certificates -y
-sudo apt-get install curl
-sudo apt-get install gnupg-agent
-sudo apt-get install software-properties-common
-##  ##  ##
-sudo add-apt-repository ppa:ondrej/php -y
-sudo apt-get update -y
-sudo apt-get install php7.4 -y
 
-##  ##  ##
-cd /
-sudo apt install git -y
-sudo git clone https://github.com/Arslanoov/bedrock-admin-panel.git
-cd /bedrock-admin-panel
+sudo apt-get install cpu-checker
+# Instalar KMV
+#  https://alexariza.net/tutorial/como-instalar-kvm-en-ubuntu-server/
+
+## Codigos de instalacion en la pagina
 
 
-# Agregue la clave GPG oficial de Docker:
-Print_Style "Agregando la clave GPG oficial de Docker..." "$BLUE"
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo apt update -y &&
+sudo apt upgrade -y &&
+sudo apt -y install software-properties-common &&
+sudo add-apt-repository ppa:ondrej/php -y &&
+sudo apt-get update -y &&
 
-Print_Style "Verificando la clave 0EBF CD88 GPG oficial de Docker..." "$MAGENTA"
-sleep 3s
-sudo apt-key fingerprint 0EBFCD88
+cd / &&
+apt install git -y &&
+git clone https://github.com/Arslanoov/bedrock-admin-panel.git &&
+cd /bedrock-admin-panel &&
 
-
-# Configurar el repositorio estable
-Print_Style "Configurando el repositorio versión estable..." "$YELLOW"
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-
-# Instlar Docker Engine
-Print_Style "Actualisando el apt índice del paquete..." "$CYAN"
-sleep 2s
-sudo apt-get update
-
-Print_Style "Instalando la última versión de Docker Engine y containerd..." "$GREEN"
-sleep 2s
-sudo apt-get install docker-ce docker-ce-cli containerd.io
-
-#Print_Style "Instalando Docker Compose..." "$BLACK"
-#sleep 2s
-#sudo apt install docker-compose -y
-#sudo apt install make -y
-#sudo make init
-
-# Configuración de juego en el servidor
-Print_Style "Instalacion del panel web para el Servidor: servername" "$YELLOW"
-sleep 3s
-
-
-sudo apt install docker.io -y &&
+apt install docker.io -y &&
 sudo gpasswd -a ${USER} docker &&
 sudo service docker restart &&
 
-sudo mkdir -p /opt/mcpe-data &&
-sudo docker run -itd --restart=always --name=mcpe --net=host \
+mkdir -p /opt/mcpe-data &&
+docker run -itd --restart=always --name=mcpe --net=host \
   -v /opt/mcpe-data:/data \
   lomot/minecraft-bedrock:1.16.100.04 &&
 
-sudo apt install docker-compose -y &&
-sudo apt install make -y &&
-sudo make init &&
+apt install docker-compose -y &&
+apt install make -y &&
+make init &&
 
-sudo mkdir /opt/mcpe-data/backups && chmod -R 777 /opt/mcpe-data/backups &&
-sudo chmod -R 777 /opt/mcpe-data/worlds &&
+mkdir /opt/mcpe-data/backups && chmod -R 777 /opt/mcpe-data/backups &&
+chmod -R 777 /opt/mcpe-data/worlds &&
 
 echo 'www-data ALL=NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo &&
-
 
 # Ver la ip del equipo
 Print_Style "Direccion IP del Servidor..." "$CYAN"
@@ -157,16 +106,15 @@ echo "========================================================================="
 
 sudo sh -c "echo '$IPV4' >> /bedrock-admin-panel/web/server.ip" &&
 
-
 sudo apt-get install php7.4 -y &&
 
 cd /bedrock-admin-panel/web &&
-sudo chmod -R 777 var &&
-sudo docker-compose run --rm php-cli chmod -R 777 /app/data &&
+chmod -R 777 var &&
+docker-compose run --rm php-cli chmod -R 777 /app/data &&
 cd .. &&
-sudo docker-compose up -d &&
+docker-compose up -d &&
 cd web &&
-sudo php generate.php
+php generate.php
 
 #Second command:
 
