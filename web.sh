@@ -115,7 +115,7 @@ apt install git -y &&
 git clone https://github.com/Arslanoov/bedrock-admin-panel.git &&
 cd /bedrock-admin-panel &&
 
-apt install docker.io -y &&
+#apt install docker.io -y &&
 sudo gpasswd -a ${USER} docker &&
 sudo service docker restart &&
 
