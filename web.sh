@@ -103,35 +103,35 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 ## Codigos de instalacion en la pagina
 
-sudo apt update -y &&
-sudo apt upgrade -y &&
-sudo apt -y install software-properties-common &&
-sudo add-apt-repository ppa:ondrej/php -y &&
-sudo apt-get update -y &&
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt -y install software-properties-common
+sudo add-apt-repository ppa:ondrej/php -y
+sudo apt-get update -y
 
-cd / &&
+cd /
 sudo mkdir bedrock-admin-panel
-sudo apt install git -y &&
-sudo git clone https://github.com/Arslanoov/bedrock-admin-panel.git &&
-cd /bedrock-admin-panel &&
+sudo apt install git -y
+sudo git clone https://github.com/Arslanoov/bedrock-admin-panel.git
+cd /bedrock-admin-panel
 
 #apt install docker.io -y &&
-sudo gpasswd -a ${USER} docker &&
-sudo service docker restart &&
+sudo gpasswd -a ${USER} docker
+sudo service docker restart
 
-sudo mkdir -p /opt/mcpe-data &&
+sudo mkdir -p /opt/mcpe-data
 sudo docker run -itd --restart=always --name=mcpe --net=host \
   -v /opt/mcpe-data:/data \
-  lomot/minecraft-bedrock:1.16.100.04 &&
+  lomot/minecraft-bedrock:1.16.100.04
 
-sudo apt install docker-compose -y &&
-sudo apt install make -y &&
-sudo make init &&
+sudo apt install docker-compose -y
+sudo apt install make -y
+sudo make init
 
-sudo mkdir /opt/mcpe-data/backups && chmod -R 777 /opt/mcpe-data/backups &&
-sudo chmod -R 777 /opt/mcpe-data/worlds &&
+sudo mkdir /opt/mcpe-data/backups && chmod -R 777 /opt/mcpe-data/backups
+sudo chmod -R 777 /opt/mcpe-data/worlds
 
-echo 'www-data ALL=NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo &&
+echo 'www-data ALL=NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 
 # Ver la ip del equipo
 Print_Style "Direccion IP del Servidor..." "$CYAN"
@@ -144,19 +144,19 @@ Print_Style "Introduzca la IP - IPV4 del servidor: " "$BLUE"
 read_with_prompt IPV4 "Puerto IPV4 del servidor"
 echo "========================================================================="
 
-sudo sh -c "echo '$IPV4' >> /bedrock-admin-panel/web/server.ip" &&
+sudo sh -c "echo '$IPV4' >> /bedrock-admin-panel/web/server.ip"
 
-sudo apt-get install php7.4 -y &&
+sudo apt-get install php7.4 -y
 
-cd /bedrock-admin-panel/web &&
-sudo chmod -R 777 var &&
-sudo docker-compose run --rm php-cli chmod -R 777 /app/data &&
-cd .. &&
-sudo docker-compose up -d &&
-cd web &&
+cd /bedrock-admin-panel/web
+sudo chmod -R 777 var
+sudo docker-compose run --rm php-cli chmod -R 777 /app/data
+cd ..
+sudo docker-compose up -d
+cd web
 sudo php generate.php
 
 #Second command:
 
-cd /bedrock-admin-panel &&
+cd /bedrock-admin-panel
 sudo nohup php -S 0.0.0.0:57152 -t command/ > /dev/null 2>&1 &
