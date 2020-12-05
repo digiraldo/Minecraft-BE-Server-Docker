@@ -113,31 +113,17 @@ sudo apt-get update
 Print_Style "Instalando la última versión de Docker Engine y containerd..." "$GREEN"
 sleep 2s
 sudo apt-get install docker-ce docker-ce-cli containerd.io
-### ### ###
-sudo gpasswd -a ${USER} docker
 
-Print_Style "Instalando Docker Compose..." "$BLACK"
-sleep 2s
-sudo apt install docker-compose -y
-sudo apt install make -y
-sudo make init
+#Print_Style "Instalando Docker Compose..." "$BLACK"
+#sleep 2s
+#sudo apt install docker-compose -y
+#sudo apt install make -y
+#sudo make init
 
 # Configuración de juego en el servidor
 Print_Style "Instalacion del panel web para el Servidor: servername" "$YELLOW"
 sleep 3s
 
-
-
-
-
-
-
-
-####### dirname/minecraftbe/servername:/data
-
-
-
-# Instale las dependencias necesarias para ejecutar el servidor de Minecraft en segundo plano
 
 sudo apt install docker.io -y &&
 sudo gpasswd -a ${USER} docker &&
