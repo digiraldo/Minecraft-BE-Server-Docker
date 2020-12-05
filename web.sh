@@ -56,21 +56,58 @@ function read_with_prompt {
   done
 }
 
+# Instale las dependencias necesarias para ejecutar el servidor de Minecraft en segundo plano
+Print_Style "Instalando screen, unzip, sudo, net-tools, wget y otras dependencias..." "$CYAN"
+if [ ! -n "`which sudo`" ]; then
+  apt-get update && apt-get install sudo -y
+fi
+sudo apt-get update
+sudo apt-get install screen unzip wget -y
+sudo apt-get install net-tools -y
+sudo apt-get install libcurl4 -y
+sudo apt-get install openssl -y
+sudo apt-get install apt-transport-https -y
+sudo apt-get install ca-certificates -y
+sudo apt-get install curl
+sudo apt-get install gnupg-agent
+sudo apt-get install software-properties-common
 
-sudo apt-get install cpu-checker
+# Agregue la clave GPG oficial de Docker:
+Print_Style "Agregando la clave GPG oficial de Docker..." "$BLUE"
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+Print_Style "Verificando la clave 0EBF CD88 GPG oficial de Docker..." "$MAGENTA"
+sleep 3s
+sudo apt-key fingerprint 0EBFCD88
+
+# Configurar el repositorio estable
+Print_Style "Configurando el repositorio versión estable..." "$YELLOW"
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
+# Instlar Docker Engine
+Print_Style "Actualisando el apt índice del paquete..." "$CYAN"
+sleep 2s
+sudo apt-get update
+
+Print_Style "Instalando la última versión de Docker Engine y containerd..." "$GREEN"
+sleep 2s
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+
+#sudo apt-get install cpu-checker
 # Instalar KMV
 #  https://alexariza.net/tutorial/como-instalar-kvm-en-ubuntu-server/
 
 ## Codigos de instalacion en la pagina
-
 
 sudo apt update -y &&
 sudo apt upgrade -y &&
 sudo apt -y install software-properties-common &&
 sudo add-apt-repository ppa:ondrej/php -y &&
 sudo apt-get update -y &&
-
-
 
 cd / &&
 mkdir bedrock-admin-panel
