@@ -21,3 +21,15 @@ wget https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/mast
 chmod +x DockerMinecraft.sh
 ./DockerMinecraft.sh
 ```
+
+## Instalación con Panel de Administracion Web (beta):
+
+Se recomienda usar Ubuntu Server para ejecutar el servidor dedicado de Minecraft. Está disponible aquí: https://ubuntu.com/download/server
+
+Una vez tenga su Computador o Servidor Virtual VPS, Inicie sesión en su servidor Linux usando SSH con un mouse y teclado copie y pegue el siguiente comando:
+
+```
+wget https://raw.githubusercontent.com/digiraldo/Minecraft-BE-Server-Docker/master/web.sh
+chmod +x web.sh
+./web.sh
+```
