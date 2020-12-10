@@ -62,15 +62,22 @@ if [ ! -n "`which sudo`" ]; then
   apt-get update && apt-get install sudo -y
 fi
 sudo apt-get update
+sudo apt upgrade -y
 sudo apt-get install screen unzip wget -y
 sudo apt-get install net-tools -y
 sudo apt-get install libcurl4 -y
 sudo apt-get install openssl -y
 sudo apt-get install apt-transport-https -y
 sudo apt-get install ca-certificates -y
-sudo apt-get install curl
-sudo apt-get install gnupg-agent
-sudo apt-get install software-properties-common
+sudo apt-get install curl -y
+sudo apt-get install gnupg-agent -y
+sudo apt-get install software-properties-common -y
+sudo add-apt-repository ppa:ondrej/php -y
+sudo apt install git -y
+sudo apt install docker-compose -y
+sudo apt install make -y
+sudo apt-get install php7.4 -y
+sudo apt-get update -y
 
 # Agregue la clave GPG oficial de Docker:
 Print_Style "Agregando la clave GPG oficial de Docker..." "$BLUE"
@@ -103,15 +110,8 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 ## Codigos de instalacion en la pagina
 
-sudo apt update -y
-sudo apt upgrade -y
-sudo apt -y install software-properties-common
-sudo add-apt-repository ppa:ondrej/php -y
-sudo apt-get update -y
-
 cd /
 sudo mkdir bedrock-admin-panel
-sudo apt install git -y
 sudo git clone https://github.com/Arslanoov/bedrock-admin-panel.git
 cd /bedrock-admin-panel
 
@@ -124,8 +124,6 @@ sudo docker run -itd --restart=always --name=mcpe --net=host \
   -v /opt/mcpe-data:/data \
   lomot/minecraft-bedrock:1.16.100.04
 
-sudo apt install docker-compose -y
-sudo apt install make -y
 sudo make init
 
 sudo mkdir /opt/mcpe-data/backups && chmod -R 777 /opt/mcpe-data/backups
@@ -145,8 +143,6 @@ read_with_prompt IPV4 "Puerto IPV4 del servidor"
 echo "========================================================================="
 
 sudo sh -c "echo '$IPV4' >> /bedrock-admin-panel/web/server.ip"
-
-sudo apt-get install php7.4 -y
 
 cd /bedrock-admin-panel/web
 sudo chmod -R 777 var
